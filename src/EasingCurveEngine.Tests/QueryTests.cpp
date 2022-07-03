@@ -16,6 +16,15 @@ namespace QueryTests
 		float duration = 1;
 		CurveParameters curveParams{ curveType, x_t0, x_tmax, duration };
 
+		TEST_METHOD(Tneg0_2)
+		{
+			float t = -0.2;
+
+			int expectedResult = 80;
+			int actualResult = EasingCurve::Create(curveParams)->Query(t);
+			Assert::AreEqual(expectedResult, actualResult);
+		}
+
 		TEST_METHOD(T0_2)
 		{
 			float t = 0.2;
@@ -39,6 +48,15 @@ namespace QueryTests
 			float t = 1.0;
 
 			int expectedResult = 200;
+			int actualResult = EasingCurve::Create(curveParams)->Query(t);
+			Assert::AreEqual(expectedResult, actualResult);
+		}
+
+		TEST_METHOD(T2_0)
+		{
+			float t = 2.0;
+
+			int expectedResult = 300;
 			int actualResult = EasingCurve::Create(curveParams)->Query(t);
 			Assert::AreEqual(expectedResult, actualResult);
 		}
