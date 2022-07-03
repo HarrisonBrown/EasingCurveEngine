@@ -33,8 +33,11 @@ std::vector<std::string> ReadFile(const std::string& filename)
 
 int main()
 {
-    std::string testFile = "..\\input\\a.txt";
-    std::vector<std::string> commands = ReadFile(testFile);
+    std::cout << "Please enter an input filepath: ";
+    std::string filePath;
+    std::getline(std::cin, filePath);
+
+    std::vector<std::string> commands = ReadFile(filePath);
     ValidationCode returnCode;
 
     EasingCurve* activeCurve = nullptr;
