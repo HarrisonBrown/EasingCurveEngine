@@ -40,9 +40,9 @@ int main()
 {
     std::vector<std::string> commands;
     do {
-    std::cout << "Please enter an input filepath: ";
-    std::string filePath;
-    std::getline(std::cin, filePath);
+        std::cout << "Please enter an input filepath: ";
+        std::string filePath;
+        std::getline(std::cin, filePath);
 
         commands = ReadFile(filePath);
     } while (commands.empty());
@@ -63,6 +63,10 @@ int main()
                 float t = stof(parsedParams.front().second);
                 auto ans = activeCurve->Query(t);
                 std::cout << ans << "\n";
+            }
+            else
+            {
+                std::cout << "No curve defined to query \"" << command << "\"\n";
             }
             break;
 
