@@ -117,5 +117,7 @@ int main()
     }
 
     delete activeCurve;
+    std::cout << "Press ENTER to exit... " << std::endl;
+    std::cin.ignore(std::numeric_limits <std::streamsize> ::max(), '\n');
     return 0;
 }
