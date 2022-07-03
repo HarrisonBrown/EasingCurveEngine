@@ -4,9 +4,9 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace EasingCurveEngineTests
+namespace ParserTests
 {
-	TEST_CLASS(ValidatorTests)
+	TEST_CLASS(ParserTests)
 	{
 	public:
 
