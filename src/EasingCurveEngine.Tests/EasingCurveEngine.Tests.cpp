@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "..\Validator.h"
+#include "..\Parser.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
