@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Validator.h"
+#include <set>
 
 enum class ValidationCode
 {
@@ -22,6 +23,7 @@ enum class ValidationCode
 };
 
 std::string curveTypes[4] = { "Linear", "InQuad", "OutQuad", "InOutQuad" };
+std::string validParameters[3] = { "x_t0", "x_tmax", "duration" };
 
 bool isFloat(const std::string& str)
 {
@@ -77,18 +79,27 @@ ValidationCode ValidateCommand(std::string command)
             return parameters.size() < 4 ? ValidationCode::MISSING_PARAMS : ValidationCode::TOO_MANY_PARAMS;
 
         // Loop through each parameter found, returning an error code at any necessary point
-        int numCurveTypes = 0, numParamPairs = 0;
+        int numCurveTypes = 0;
+        std::set<std::string> validParametersFound;
         for (auto parameter : parameters)
         {
+            std::remove_if(parameter.begin(), parameter.end(), isspace);
             size_t eqPos = parameter.find('=');
             if (eqPos != std::string::npos)
             {
-                if (parameter.substr(0, eqPos).empty())
+                std::string paramName;
+                if (!(paramName = parameter.substr(0, eqPos)).empty())
+                {
+                    for (auto validParam : validParameters)
+                    {
+                        if (paramName == validParam)
+                            validParametersFound.emplace(paramName);
+                    }
+                }
+                else
                     return ValidationCode::BAD_PARAM;
                 if (parameter.substr(eqPos + 1).empty())
                     return ValidationCode::BAD_VALUE;
-
-                numParamPairs++;
             }
             else
             {
@@ -107,7 +118,7 @@ ValidationCode ValidateCommand(std::string command)
                 numCurveTypes++;
             }
         }
-        if (numParamPairs < 3)
+        if (validParametersFound.size() < 3)
             return ValidationCode::MISSING_PARAMS;
         if (numCurveTypes < 1)
             return ValidationCode::MISSING_CURVE_DEFINITION;
