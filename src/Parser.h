@@ -156,7 +156,7 @@ std::vector<Parameter> ParseCommand(std::string command, ValidationCode& returnC
                 numCurveTypes++;
             }
         }
-        if (validParametersFound.size() < 3)
+        if (validParametersFound.size() < validParameters->size())
         {
             returnCode = ValidationCode::MISSING_PARAMS;
             return {};
