@@ -15,7 +15,7 @@ enum class ValidationCode
     EMTPY_COMMAND,
     MISSING_PARAMS,
     TOO_MANY_PARAMS,
-    MISSING_CURVE_DEFINITION,
+    MISSING_CURVETYPE,
     BAD_PARAM,
     BAD_VALUE,
     BAD_CURVETYPE,
@@ -76,7 +76,9 @@ ValidationCode ValidateCommand(std::string command)
 
         // Right number of parameters?
         if (parameters.size() != 4)
+        {
             return parameters.size() < 4 ? ValidationCode::MISSING_PARAMS : ValidationCode::TOO_MANY_PARAMS;
+        }
 
         // Loop through each parameter found, returning an error code at any necessary point
         int numCurveTypes = 0;
@@ -91,10 +93,18 @@ ValidationCode ValidateCommand(std::string command)
                 std::string paramValue = parameter.substr(eqPos + 1);
                 if (!paramName.empty())
                 {
+                    bool isValid = false;
                     for (auto validParam : validParameters)
                     {
                         if (paramName == validParam)
+                        {
                             validParametersFound.emplace(paramName);
+                            isValid = true;
+                        }
+                    }
+                    if (!isValid)
+                    {
+                        return ValidationCode::BAD_PARAM;
                     }
                 }
                 else
@@ -103,7 +113,9 @@ ValidationCode ValidateCommand(std::string command)
                 }
 
                 if (paramValue.empty() || !isInt(paramValue))
+                {
                     return ValidationCode::BAD_VALUE;
+                }
             }
             else
             {
@@ -117,7 +129,9 @@ ValidationCode ValidateCommand(std::string command)
                     }
                 }
                 if (!goodType)
+                {
                     return ValidationCode::BAD_CURVETYPE;
+                }
 
                 numCurveTypes++;
             }
@@ -125,7 +139,7 @@ ValidationCode ValidateCommand(std::string command)
         if (validParametersFound.size() < 3)
             return ValidationCode::MISSING_PARAMS;
         if (numCurveTypes < 1)
-            return ValidationCode::MISSING_CURVE_DEFINITION;
+            return ValidationCode::MISSING_CURVETYPE;
 
         // Getting to this point indicates the command is a valid curve definition
         return ValidationCode::VALID_CURVE;

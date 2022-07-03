@@ -19,6 +19,15 @@ namespace EasingCurveEngineTests
 			Assert::AreEqual(expectedCode, actualCode);
 		}
 
+		TEST_METHOD(ValidCurveDefinitionDifferentOrder)
+		{
+			std::string command = "x_t0 = 100, x_tmax = 200, Linear, duration = 1";
+			int expectedCode = (int)ValidationCode::VALID_CURVE;
+			int actualCode = (int)ValidateCommand(command);
+
+			Assert::AreEqual(expectedCode, actualCode);
+		}
+
 		TEST_METHOD(TooManyParameters)
 		{
 			std::string command = "Linear, x_t0 = 100, x_tmax = 200, duration = 1, blah = 300";
@@ -37,10 +46,28 @@ namespace EasingCurveEngineTests
 			Assert::AreEqual(expectedCode, actualCode);
 		}
 
+		TEST_METHOD(MissingParametersAllx_t0)
+		{
+			std::string command = "Linear, x_t0 = 100, x_t0 = 200, x_t0 = 300";
+			int expectedCode = (int)ValidationCode::MISSING_PARAMS;
+			int actualCode = (int)ValidateCommand(command);
+
+			Assert::AreEqual(expectedCode, actualCode);
+		}
+
 		TEST_METHOD(IncorrectParameters)
 		{
 			std::string command = "Linear, Not = 100, A = 200, Parameter = 1";
-			int expectedCode = (int)ValidationCode::MISSING_PARAMS;
+			int expectedCode = (int)ValidationCode::BAD_PARAM;
+			int actualCode = (int)ValidateCommand(command);
+
+			Assert::AreEqual(expectedCode, actualCode);
+		}
+
+		TEST_METHOD(BadParam)
+		{
+			std::string command = "Linear, Not = 100, A = 200, Parameter = 1";
+			int expectedCode = (int)ValidationCode::BAD_PARAM;
 			int actualCode = (int)ValidateCommand(command);
 
 			Assert::AreEqual(expectedCode, actualCode);
@@ -64,6 +91,24 @@ namespace EasingCurveEngineTests
 			Assert::AreEqual(expectedCode, actualCode);
 		}
 
+		TEST_METHOD(MissingCurveType)
+		{
+			std::string command = "x_t0 = 100, x_t0 = 100, x_tmax = 200, duration = 1";
+			int expectedCode = (int)ValidationCode::MISSING_CURVETYPE;
+			int actualCode = (int)ValidateCommand(command);
+
+			Assert::AreEqual(expectedCode, actualCode);
+		}
+
+		TEST_METHOD(BadCurveType)
+		{
+			std::string command = "NotACurve, x_t0 = 100, x_tmax = 200, duration = 1";
+			int expectedCode = (int)ValidationCode::BAD_CURVETYPE;
+			int actualCode = (int)ValidateCommand(command);
+
+			Assert::AreEqual(expectedCode, actualCode);
+		}
+
 		TEST_METHOD(ValidQuery)
 		{
 			std::string command = "1.0";
@@ -77,6 +122,15 @@ namespace EasingCurveEngineTests
 		{
 			std::string command = "1.0.0";
 			int expectedCode = (int)ValidationCode::BAD_QUERY;
+			int actualCode = (int)ValidateCommand(command);
+
+			Assert::AreEqual(expectedCode, actualCode);
+		}
+
+		TEST_METHOD(EmptyCommand)
+		{
+			std::string command = "";
+			int expectedCode = (int)ValidationCode::EMTPY_COMMAND;
 			int actualCode = (int)ValidateCommand(command);
 
 			Assert::AreEqual(expectedCode, actualCode);
