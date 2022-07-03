@@ -22,6 +22,8 @@ enum class ValidationCode
     BAD_QUERY,
 };
 
+using Parameter = std::pair<std::string, std::string>;
+
 std::string curveTypes[4] = { "Linear", "InQuad", "OutQuad", "InOutQuad" };
 std::string validParameters[3] = { "x_t0", "x_tmax", "duration" };
 
@@ -45,19 +47,30 @@ bool isInt(const std::string& str)
     return (*ptr) == '\0';
 }
 
-ValidationCode ValidateCommand(std::string command)
+std::vector<Parameter> ParseCommand(std::string command, ValidationCode& returnCode)
 {
+    std::vector<Parameter> returnParams;
+
     if (command.empty())
-        return ValidationCode::EMTPY_COMMAND;
+    {
+        returnCode = ValidationCode::EMTPY_COMMAND;
+        return {};
+    }
 
     std::size_t commaPos = command.find(',');
     if (commaPos == std::string::npos)
     {
         // No comma found, is this a valid query (i.e. a float)?
         if (isFloat(command))
-            return ValidationCode::VALID_QUERY;
+        {
+            returnCode = ValidationCode::VALID_QUERY;
+            returnParams.emplace_back(Parameter{ "Query", command });
+        }
         else
-            return ValidationCode::BAD_QUERY;
+        {
+            returnCode = ValidationCode::BAD_QUERY;
+            return {};
+        }
     }
     else
     {
@@ -77,7 +90,8 @@ ValidationCode ValidateCommand(std::string command)
         // Right number of parameters?
         if (parameters.size() != 4)
         {
-            return parameters.size() < 4 ? ValidationCode::MISSING_PARAMS : ValidationCode::TOO_MANY_PARAMS;
+            returnCode = parameters.size() < 4 ? ValidationCode::MISSING_PARAMS : ValidationCode::TOO_MANY_PARAMS;
+            return {};
         }
 
         // Loop through each parameter found, returning an error code at any necessary point
@@ -99,22 +113,26 @@ ValidationCode ValidateCommand(std::string command)
                         if (paramName == validParam)
                         {
                             validParametersFound.emplace(paramName);
+                            returnParams.emplace_back(Parameter{ paramName, paramValue });
                             isValid = true;
                         }
                     }
                     if (!isValid)
                     {
-                        return ValidationCode::BAD_PARAM;
+                        returnCode = ValidationCode::BAD_PARAM;
+                        return {};
                     }
                 }
                 else
                 {
-                    return ValidationCode::BAD_PARAM;
+                    returnCode = ValidationCode::BAD_PARAM;
+                    return {};
                 }
 
                 if (paramValue.empty() || !isInt(paramValue))
                 {
-                    return ValidationCode::BAD_VALUE;
+                    returnCode = ValidationCode::BAD_VALUE;
+                    return {};
                 }
             }
             else
@@ -126,22 +144,32 @@ ValidationCode ValidateCommand(std::string command)
                     if (parameter == type)
                     {
                         goodType = true;
+                        returnParams.emplace_back(Parameter{ "CurveType", parameter });
                     }
                 }
                 if (!goodType)
                 {
-                    return ValidationCode::BAD_CURVETYPE;
+                    returnCode = ValidationCode::BAD_CURVETYPE;
+                    return {};
                 }
 
                 numCurveTypes++;
             }
         }
         if (validParametersFound.size() < 3)
-            return ValidationCode::MISSING_PARAMS;
+        {
+            returnCode = ValidationCode::MISSING_PARAMS;
+            return {};
+        }
         if (numCurveTypes < 1)
-            return ValidationCode::MISSING_CURVETYPE;
+        {
+            returnCode = ValidationCode::MISSING_CURVETYPE;
+            return {};
+        }
 
         // Getting to this point indicates the command is a valid curve definition
-        return ValidationCode::VALID_CURVE;
+        returnCode = ValidationCode::VALID_CURVE;
     }
+
+    return returnParams;
 }

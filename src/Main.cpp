@@ -34,9 +34,11 @@ int main()
 {
     std::string testFile = "..\\input\\a.txt";
     std::vector<std::string> commands = ReadFile(testFile);
+    ValidationCode returnCode;
 
     for (auto command : commands)
     {
-        std::cout << "Command validation for \"" << command << "\" returned code: " <<(int)ValidateCommand(command) << "\n";
+        ParseCommand(command, returnCode);
+        std::cout << "Command validation for \"" << command << "\" returned code: " << (int)returnCode << "\n";
     }
 }
