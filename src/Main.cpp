@@ -108,6 +108,7 @@ int main()
                 }
             }
 
+            delete activeCurve;
             activeCurve = EasingCurve::Create(curveParams);
             break;
         default:
