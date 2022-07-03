@@ -40,6 +40,21 @@ int OutQuadCurve::Query(float t)
 
 int InOutQuadCurve::Query(float t)
 {
+	// Split duration in two, treating values for the first half as InQuadCurves and values for the second half as OutQuadCurves
 
-	return (((x_tmax - x_t0) / duration) * t) + x_t0;
+	int x_thalf = x_t0 + ((x_tmax - x_t0) / 2);
+	if (t <= duration / 2)
+	{
+		// From t0 to thalf for duration/2
+		CurveParameters firstHalfParams{ CurveType::INQUAD, x_t0, x_thalf, duration / 2 };
+		return EasingCurve::Create(firstHalfParams)->Query(t / 2);
+	}
+	else
+	{
+		// From thalf to tmax for duration/2
+		CurveParameters secondHalfParams{ CurveType::OUTQUAD, x_thalf, x_tmax, duration / 2 };
+
+		// As equation vertex will be on duration/2, shift t back by the same amount
+		return EasingCurve::Create(secondHalfParams)->Query(t - (duration / 2));
+	}
 }

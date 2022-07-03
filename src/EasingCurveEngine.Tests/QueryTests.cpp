@@ -6,7 +6,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace QueryTests
 {
-	TEST_CLASS(LinearCurveTests)
+	TEST_CLASS(LinearCurveTestsA)
 	{
 	public:
 
@@ -16,7 +16,7 @@ namespace QueryTests
 		float duration = 1;
 		CurveParameters curveParams{ curveType, x_t0, x_tmax, duration };
 
-		TEST_METHOD(Linear_100_200_1_t02)
+		TEST_METHOD(T0_2)
 		{
 			float t = 0.2;
 
@@ -25,7 +25,7 @@ namespace QueryTests
 			Assert::AreEqual(expectedResult, actualResult);
 		}
 
-		TEST_METHOD(Linear_100_200_1_t05)
+		TEST_METHOD(T0_5)
 		{
 			float t = 0.5;
 
@@ -34,7 +34,7 @@ namespace QueryTests
 			Assert::AreEqual(expectedResult, actualResult);
 		}
 
-		TEST_METHOD(Linear_100_200_1_t1)
+		TEST_METHOD(T1_0)
 		{
 			float t = 1.0;
 
