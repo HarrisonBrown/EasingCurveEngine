@@ -28,18 +28,26 @@ std::vector<std::string> ReadFile(const std::string& filename)
     }
 
     inFile.close();
+
+    if (commands.empty())
+    {
+        std::cout << "Invalid or empty file.\n";
+    }
     return commands;
 }
 
 int main()
 {
+    std::vector<std::string> commands;
+    do {
     std::cout << "Please enter an input filepath: ";
     std::string filePath;
     std::getline(std::cin, filePath);
 
-    std::vector<std::string> commands = ReadFile(filePath);
-    ValidationCode returnCode;
+        commands = ReadFile(filePath);
+    } while (commands.empty());
 
+    ValidationCode returnCode;
     EasingCurve* activeCurve = nullptr;
     for (auto command : commands)
     {
