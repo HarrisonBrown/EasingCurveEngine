@@ -6,7 +6,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace QueryTests
 {
-	TEST_CLASS(LinearCurveTestsA)
+	TEST_CLASS(LinearCurveTests_100_200_1)
 	{
 	public:
 
@@ -44,7 +44,7 @@ namespace QueryTests
 		}
 	};
 
-	TEST_CLASS(InQuadCurveTests)
+	TEST_CLASS(InQuadCurveTests_100_200_1)
 	{
 	public:
 
@@ -54,7 +54,7 @@ namespace QueryTests
 		float duration = 1;
 		CurveParameters curveParams{ curveType, x_t0, x_tmax, duration };
 
-		TEST_METHOD(InQuad_100_200_1_t02)
+		TEST_METHOD(T0_2)
 		{
 			float t = 0.2;
 
@@ -63,7 +63,7 @@ namespace QueryTests
 			Assert::AreEqual(expectedResult, actualResult);
 		}
 
-		TEST_METHOD(InQuad_100_200_1_t05)
+		TEST_METHOD(T0_5)
 		{
 			float t = 0.5;
 
@@ -72,7 +72,7 @@ namespace QueryTests
 			Assert::AreEqual(expectedResult, actualResult);
 		}
 
-		TEST_METHOD(InQuad_100_200_1_t1)
+		TEST_METHOD(T1_0)
 		{
 			float t = 1.0;
 
@@ -82,7 +82,7 @@ namespace QueryTests
 		}
 	};
 
-	TEST_CLASS(OutQuadCurveTests)
+	TEST_CLASS(OutQuadCurveTests_100_200_1)
 	{
 	public:
 
@@ -92,7 +92,7 @@ namespace QueryTests
 		float duration = 1;
 		CurveParameters curveParams{ curveType, x_t0, x_tmax, duration };
 
-		TEST_METHOD(OutQuad_100_200_1_t02)
+		TEST_METHOD(T0_2)
 		{
 			float t = 0.2;
 
@@ -101,7 +101,7 @@ namespace QueryTests
 			Assert::AreEqual(expectedResult, actualResult);
 		}
 
-		TEST_METHOD(OutQuad_100_200_1_t05)
+		TEST_METHOD(T0_5)
 		{
 			float t = 0.5;
 
@@ -110,7 +110,7 @@ namespace QueryTests
 			Assert::AreEqual(expectedResult, actualResult);
 		}
 
-		TEST_METHOD(OutQuad_100_200_1_t1)
+		TEST_METHOD(T1)
 		{
 			float t = 1.0;
 
@@ -120,7 +120,7 @@ namespace QueryTests
 		}
 	};
 
-	TEST_CLASS(InOutQuadCurveTests)
+	TEST_CLASS(InOutQuadCurveTests_100_200_1)
 	{
 	public:
 
@@ -130,7 +130,7 @@ namespace QueryTests
 		float duration = 1;
 		CurveParameters curveParams{ curveType, x_t0, x_tmax, duration };
 
-		TEST_METHOD(InOutQuad_100_200_1_t02)
+		TEST_METHOD(T0_2)
 		{
 			float t = 0.2;
 
@@ -139,7 +139,7 @@ namespace QueryTests
 			Assert::AreEqual(expectedResult, actualResult);
 		}
 
-		TEST_METHOD(InOutQuad_100_200_1_t05)
+		TEST_METHOD(T0_5)
 		{
 			float t = 0.5;
 
@@ -148,7 +148,7 @@ namespace QueryTests
 			Assert::AreEqual(expectedResult, actualResult);
 		}
 
-		TEST_METHOD(InOutQuad_100_200_1_t07)
+		TEST_METHOD(T0_7)
 		{
 			float t = 0.7;
 
@@ -157,7 +157,7 @@ namespace QueryTests
 			Assert::AreEqual(expectedResult, actualResult);
 		}
 
-		TEST_METHOD(InOutQuad_100_200_1_t1)
+		TEST_METHOD(T1_0)
 		{
 			float t = 1.0;
 
