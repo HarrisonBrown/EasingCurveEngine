@@ -83,12 +83,13 @@ ValidationCode ValidateCommand(std::string command)
         std::set<std::string> validParametersFound;
         for (auto parameter : parameters)
         {
-            std::remove_if(parameter.begin(), parameter.end(), isspace);
+            parameter.erase(std::remove_if(parameter.begin(), parameter.end(), std::isspace), parameter.end());
             size_t eqPos = parameter.find('=');
             if (eqPos != std::string::npos)
             {
-                std::string paramName;
-                if (!(paramName = parameter.substr(0, eqPos)).empty())
+                std::string paramName = parameter.substr(0, eqPos);
+                std::string paramValue = parameter.substr(eqPos + 1);
+                if (!paramName.empty())
                 {
                     for (auto validParam : validParameters)
                     {
@@ -97,8 +98,11 @@ ValidationCode ValidateCommand(std::string command)
                     }
                 }
                 else
+                {
                     return ValidationCode::BAD_PARAM;
-                if (parameter.substr(eqPos + 1).empty())
+                }
+
+                if (paramValue.empty() || !isInt(paramValue))
                     return ValidationCode::BAD_VALUE;
             }
             else
