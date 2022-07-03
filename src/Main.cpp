@@ -4,11 +4,11 @@
 #include <vector>
 
 #include "Parser.h"
-#include "EasingCurve.h"
+#include "Curves.h"
 
 std::vector<std::string> ReadFile(const std::string& filename)
 {
-    std::cout << "Reading input from file \"" << filename << "\".\n";
+    //std::cout << "Reading input from file \"" << filename << "\".\n";
     std::ifstream inFile{ filename };
 
     if (!inFile)
@@ -41,8 +41,9 @@ int main()
     for (auto command : commands)
     {
         std::vector<Parameter> parsedParams = ParseCommand(command, returnCode);
-        std::cout << "Command validation for \"" << command << "\" returned code: " << (int)returnCode << "\n";
+        //std::cout << "Command validation for \"" << command << "\" returned code: " << (int)returnCode << "\n";
 
+        CurveParameters curveParams{};
         switch (returnCode)
         {
         case ValidationCode::VALID_QUERY:
@@ -50,12 +51,12 @@ int main()
             {
                 float t = stof(parsedParams.front().second);
                 auto ans = activeCurve->Query(t);
-                std::cout << ans;
+                std::cout << ans << "\n";
             }
             break;
 
         case ValidationCode::VALID_CURVE:
-            CurveParameters curveParams{};
+            std::cout << command << "\n";
             for (auto param : parsedParams)
             {
                 if (param.first == "x_t0")
@@ -94,6 +95,14 @@ int main()
 
             activeCurve = EasingCurve::Create(curveParams);
             break;
+        default:
+            std::cout << "Invalid input";
+            delete activeCurve;
+            return 1;
+            break;
         }
     }
+
+    delete activeCurve;
+    return 0;
 }

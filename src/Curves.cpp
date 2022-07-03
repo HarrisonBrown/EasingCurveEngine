@@ -1,5 +1,4 @@
-#include "Easingcurve.h"
-#include "LinearCurve.h"
+#include "Curves.h"
 
 
 EasingCurve* EasingCurve::Create(CurveParameters parameters)
@@ -13,4 +12,10 @@ EasingCurve* EasingCurve::Create(CurveParameters parameters)
 		break;
 	}
 	return nullptr;
+}
+
+int LinearCurve::Query(float t)
+{
+	auto a = ((x_tmax - x_t0) / duration);
+	return (a * t) + x_t0;
 }
