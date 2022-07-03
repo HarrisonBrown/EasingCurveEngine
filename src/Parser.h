@@ -145,6 +145,7 @@ std::vector<Parameter> ParseCommand(std::string command, ValidationCode& returnC
                     {
                         goodType = true;
                         returnParams.emplace_back(Parameter{ "CurveType", parameter });
+                        break;
                     }
                 }
                 if (!goodType)
@@ -156,7 +157,8 @@ std::vector<Parameter> ParseCommand(std::string command, ValidationCode& returnC
                 numCurveTypes++;
             }
         }
-        if (validParametersFound.size() < validParameters->size())
+
+        if (validParametersFound.size() < std::size(validParameters))
         {
             returnCode = ValidationCode::MISSING_PARAMS;
             return {};
