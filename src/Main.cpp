@@ -107,10 +107,8 @@ int main()
             activeCurve = EasingCurve::Create(curveParams);
             break;
         default:
-            std::cout << "Invalid input";
-            delete activeCurve;
-            return 1;
-            break;
+            std::cout << "Invalid input: \"" << command << "\"\n";
+            continue;
         }
     }
 
